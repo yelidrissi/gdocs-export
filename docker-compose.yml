@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        extra: chmod -R 777 ${APP_DOCKER_DIR}
     container_name: ${DOCKER_IMAGE}_container
     ports:
       - "${PORT_PREFIX}36:${PORT_PREFIX}36"

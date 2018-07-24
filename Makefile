@@ -5,15 +5,15 @@ include .env
 AUTH_FILE=google-api-authorization.yaml
 
 #DATE=$(eval DATE_DIR=$(shell date +%Y-%m))
-DATE=$(shell date +%Y-%m)
+#DATE=$(shell date +%Y-%m)
 
 FILE_NAME=default
 THEME=sample
 
-INPUT_FILE_DIR=input/$(DATE)
+INPUT_FILE_DIR=input
 INPUT_FILE=$(INPUT_FILE_DIR)/$(FILE_NAME).html
 
-OUTPUT_DIR=build/$(DATE)
+OUTPUT_DIR=build
 OUTPUT_FILE_DIR=$(OUTPUT_DIR)/$(FILE_NAME)
 
 
@@ -39,7 +39,6 @@ api_auth:
 # usage:
 # make api_download DOC_ID=xxxxx FILE_NAME=xxx
 api_download: #install_auth_file
-	if [ ! -d input/$(DATE) ]; then mkdir input/$(DATE); fi;
 	# get DOC_ID from input
 	bundle exec google-api execute \
 	  -u "https://docs.google.com/feeds/download/documents/export/Export?id=$(DOC_ID)&exportFormat=html" \
