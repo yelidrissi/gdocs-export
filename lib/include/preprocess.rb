@@ -30,6 +30,7 @@ class PandocPreprocess
     fixup_empty_headers
     fixup_page_breaks
     fixup_lists
+    fixup_image_attributes
   end
 
   # Replace remote with local images
@@ -179,6 +180,16 @@ class PandocPreprocess
       found = true
       short = e.text[0, 30]
       @errors << "Colspan > 1 for \"#{short}\""
+    end
+  end
+  # Add width and height attributes to images.
+  def fixup_image_attributes
+    doc.css("img").each do |img|
+      style = img.attr('style')
+      %w[height width].each do |att|
+        val = style.match(/#{att}\s*:\s*([\d.]+)px/)[1]
+        img.set_attribute(att, val)
+      end
     end
   end
 end
