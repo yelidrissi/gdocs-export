@@ -28,6 +28,7 @@ class PandocPreprocess
 
   def process
     validate
+    remove_comments
     fixup_image_paths
     fixup_image_parents
     fixup_titles
@@ -202,6 +203,19 @@ class PandocPreprocess
   # Adds a colgroup that includes col tags with a relative width attribute, to all tables. Necessary in order to be parsed by Pandoc.
   def add_colgroup_to_tables
     @doc.css("table").map {|t| GdocTable.new(t)}.each &:prepend_colgroup
+  end
+  def remove_comments
+    @doc.css('a[id^="cmnt"]').each do |a|
+      id = a.attribute('id').value
+      if id =~ /^cmnt\d*$/
+        a.parent.parent.remove
+        next
+      end
+      if id =~ /^cmnt_ref\d*$/
+        a.parent.remove
+        next
+      end
+    end
   end
 end
 
